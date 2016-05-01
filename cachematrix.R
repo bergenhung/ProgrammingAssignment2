@@ -2,14 +2,36 @@
 ## functions do
 
 ## Write a short comment describing this function
+## Return a list used to cache an inverted matrix using solve()
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  inv <- NULL
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL
+  }
+  get <- function() x
+  setinv <- function(solve) inv <<- solve
+  getinv <- function() inv
+  list(set = set, get = get,
+       setinv = setinv,
+       getinv = getinv)
 }
 
 
 ## Write a short comment describing this function
+## Return the inverted matrix from cache if existed
+## Otherwise, cache inverted matrix using solve()
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+  inv <- x$getinv()
+  if(!is.null(inv)) {
+    message("getting cached data")
+    return(inv)
+  }
+  data <- x$get()
+  inv <- solve(data, ...)
+  x$setinv(inv)
+  inv
 }
